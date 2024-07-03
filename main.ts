@@ -1,15 +1,13 @@
 import {
 	App,
-	Editor,
-	Modal,
 	Notice,
 	Plugin,
 	PluginSettingTab,
 	Setting,
-	Vault
 } from 'obsidian';
-import { simpleGit, SimpleGit, CleanOptions, SimpleGitOptions } from 'simple-git';
-import { setIntervalAsync, clearIntervalAsync } from 'set-interval-async';
+import { simpleGit, SimpleGit, SimpleGitOptions } from 'simple-git';
+import { setIntervalAsync} from 'set-interval-async';
+import * as path from 'path';
 
 let simpleGitOptions: Partial<SimpleGitOptions>;
 let git: SimpleGit;
@@ -70,11 +68,15 @@ export default class GHSyncPlugin extends Plugin {
     	let date = new Date();
     	let msg = hostname + " " + date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate() + ":" + date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds();
 
-		// git add .
-		// git commit -m hostname-date-time
 		if (!clean) {
 			try {
-				await git.add('./[!.obsidian]*').commit(msg);
+				const repoRoot: string = (await git.revparse(['--show-toplevel'])).trim(); // Определить корень репозитория
+				const pluginDir: string = path.join(repoRoot, '.obsidian/plugins/*');
+				const repoWithoutObsidianData = path.join(repoRoot, '[!.obsidian]*')
+				const syncPlugin = path.join(repoRoot, '.obsidian', 'plugins', 'obsidian-github-sync*')
+
+				const args = ['rm', '-f', '--cached', syncPlugin];
+				await git.add(repoWithoutObsidianData).add(pluginDir).raw(args).commit(msg);
 		    } catch (e) {
 		    	new Notice(e);
 		    	return;
