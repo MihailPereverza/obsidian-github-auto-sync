@@ -73,7 +73,7 @@ export default class GHSyncPlugin extends Plugin {
 				const repoRoot: string = (await git.revparse(['--show-toplevel'])).trim(); // Определить корень репозитория
 				const pluginDir: string = path.join(repoRoot, '.obsidian/plugins/*');
 				const repoWithoutObsidianData = path.join(repoRoot, '[!.obsidian]*')
-				const syncPlugin = path.join(repoRoot, '.obsidian', 'plugins', 'obsidian-github-sync*')
+				const syncPlugin = path.join(repoRoot, '.obsidian', 'plugins', 'obsidian-github-auto-sync*')
 
 				const args = ['rm', '-f', '--cached', syncPlugin];
 				await git.add(repoWithoutObsidianData).add(pluginDir).raw(args).commit(msg);

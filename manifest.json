@@ -1,10 +1,10 @@
 {
-	"id": "github-sync",
+	"id": "github-auto-sync",
 	"name": "GitHub Sync",
 	"version": "1.0.3",
 	"minAppVersion": "0.15.0",
 	"description": "Sync vault to personal GitHub.",
-	"author": "Kevin Chin",
-	"authorUrl": "https://kevch.in",
+	"author": "Mikhail Pereverza",
+	"authorUrl": "https://github.com/MihailPereverza",
 	"isDesktopOnly": true
 }
